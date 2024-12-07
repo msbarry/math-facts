@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Math Facts</title>
+    <meta charset="UTF-8" />
+    <style>
+      :root {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 5mm;
+      }
+      .num {
+        min-width: 2em;
+        text-align: center;
+        display: inline-block;
+      }
+      li {
+        padding-bottom: 1mm;
+      }
+      input,
+      label {
+        display: inline-block;
+      }
+      #controls {
+        display: flex;
+        flex-direction: row;
+      }
+      @media print {
+        .noprint {
+          display: none;
+        }
+      }
+      table {
+        width: 100%;
+      }
+      td {
+        width: 50%;
+        vertical-align: top;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="noprint">
+      <h1>Math Facts</h1>
+      <div id="controls">
+        <label for="max">max:</label>
+        <input type="number" id="max" value="20" min="10" max="100" />
+        <input type="radio" id="add" name="op" value="add" checked />
+        <label for="add">addition</label><br />
+        <input type="radio" id="subtract" name="op" value="subtract" />
+        <label for="subtract">subtraction</label>
+        <input type="radio" id="mixed" name="op" value="mixed" />
+        <label for="mixed">mixed</label>
+      </div>
+    </div>
+    <table>
+      <tr>
+        <td><ol id="col1"></ol></td>
+        <td><ol id="col2" start="26"></ol></td>
+      </tr>
+    </table>
+    <script>
+      function reset() {
+        col1.innerText = col2.innerText = "";
+        const additions = [];
+        for (let i = 1; i <= max.value; i++) {
+          for (let j = 1; j <= max.value - i; j++) {
+            additions.push([i, j]);
+          }
+        }
+        const subtractions = [];
+        for (let i = 0; i <= max.value; i++) {
+          for (let j = 1; j <= i; j++) {
+            subtractions.push([i, j]);
+          }
+        }
+        for (let i = 0; i < 50; i++) {
+          const dest = i < 25 ? col1 : col2;
+          const op = add.checked
+            ? "+"
+            : subtract.checked
+            ? "−"
+            : Math.random() > 0.5
+            ? "+"
+            : "−";
+          const options = op === "+" ? additions : subtractions;
+          const j = i + Math.floor(Math.random() * (options.length - i));
+          [options[i], options[j]] = [options[j], options[i]];
+          const next = document.createElement("li");
+          const a = document.createElement("div");
+          a.className = "num";
+          const b = document.createElement("div");
+          b.className = "num";
+          [a.innerText, b.innerText] = options[i];
+          next.appendChild(a);
+          next.appendChild(document.createTextNode(op));
+          next.appendChild(b);
+          next.appendChild(document.createTextNode("= _______"));
+          dest.appendChild(next);
+        }
+      }
+      reset();
+      add.onchange = subtract.onchange = mixed.onchange = max.onchange = reset;
+    </script>
+  </body>
+</html>
