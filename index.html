@@ -53,6 +53,8 @@
         <label for="subtract">subtraction</label>
         <input type="radio" id="mixed" name="op" value="mixed" />
         <label for="mixed">mixed</label>
+        <input type="checkbox" id="facts" name="facts" />
+        <label for="facts">just facts</label>
       </div>
     </div>
     <table>
@@ -63,17 +65,32 @@
     </table>
     <script>
       function reset() {
+        const justfacts = facts.checked;
         col1.innerText = col2.innerText = "";
         const additions = [];
+        function isFact(a, b, sum) {
+          return (
+            sum <= 10 ||
+            a === 10 ||
+            b === 10 ||
+            a === 9 ||
+            b === 9 ||
+            Math.abs(a - b) <= 1
+          );
+        }
         for (let i = 1; i <= max.value; i++) {
           for (let j = 1; j <= max.value - i; j++) {
-            additions.push([i, j]);
+            if (!justfacts || isFact(i, j, i + j)) {
+              additions.push([i, j]);
+            }
           }
         }
         const subtractions = [];
         for (let i = 0; i <= max.value; i++) {
           for (let j = 1; j <= i; j++) {
-            subtractions.push([i, j]);
+            if (!justfacts || isFact(j, i - j, i)) {
+              subtractions.push([i, j]);
+            }
           }
         }
         for (let i = 0; i < 50; i++) {
@@ -102,7 +119,12 @@
         }
       }
       reset();
-      add.onchange = subtract.onchange = mixed.onchange = max.onchange = reset;
+      add.onchange =
+        subtract.onchange =
+        mixed.onchange =
+        max.onchange =
+        facts.onchange =
+          reset;
     </script>
   </body>
 </html>
