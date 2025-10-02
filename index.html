@@ -51,6 +51,15 @@
         <label for="add">addition</label><br />
         <input type="radio" id="subtract" name="op" value="subtract" />
         <label for="subtract">subtraction</label>
+        <input
+          type="radio"
+          id="multiplication"
+          name="op"
+          value="multiplication"
+        />
+        <label for="multiplication">multiplication</label>
+        <input type="radio" id="division" name="op" value="division" />
+        <label for="division">division</label>
         <input type="radio" id="mixed" name="op" value="mixed" />
         <label for="mixed">mixed</label>
         <input type="checkbox" id="facts" name="facts" />
@@ -93,11 +102,31 @@
             }
           }
         }
+        const multiplications = [];
+        for (let i = 0; i <= max.value; i++) {
+          for (const j of [0, 1, 2, 3, 5, 10]) {
+            if (Math.random() > 0.5) {
+              multiplications.push([i, j, "x"]);
+            } else {
+              multiplications.push([j, i, "x"]);
+            }
+          }
+        }
+        const divisions = [];
+        for (let i = 0; i <= max.value; i++) {
+          for (const j of [0, 1, 2]) {
+            divisions.push([j === 0 ? i : i * j, j, "÷"]);
+          }
+        }
         const options = add.checked
           ? additions
           : subtract.checked
           ? subtractions
-          : [...additions, ...subtractions];
+          : multiplication.checked
+          ? multiplications
+          : division.checked
+          ? divisions
+          : [...additions, ...subtractions, ...multiplications, ...divisions];
 
         for (let i = 0; i < Math.min(50, options.length); i++) {
           const dest = i < 25 ? col1 : col2;
@@ -121,6 +150,8 @@
       add.onchange =
         subtract.onchange =
         mixed.onchange =
+        multiplication.onchange =
+        division.onchange =
         max.onchange =
         facts.onchange =
           reset;
