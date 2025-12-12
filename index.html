@@ -47,21 +47,14 @@
       <div id="controls">
         <label for="max">max:</label>
         <input type="number" id="max" value="12" min="1" max="100" />
-        <input type="radio" id="add" name="op" value="add" checked />
+        <input type="checkbox" id="add" name="add" checked />
         <label for="add">addition</label><br />
-        <input type="radio" id="subtract" name="op" value="subtract" />
+        <input type="checkbox" id="subtract" name="subtract" />
         <label for="subtract">subtraction</label>
-        <input
-          type="radio"
-          id="multiplication"
-          name="op"
-          value="multiplication"
-        />
+        <input type="checkbox" id="multiplication" name="multiplication" />
         <label for="multiplication">multiplication</label>
-        <input type="radio" id="division" name="op" value="division" />
+        <input type="checkbox" id="division" name="division" />
         <label for="division">division</label>
-        <input type="radio" id="mixed" name="op" value="mixed" />
-        <label for="mixed">mixed</label>
         <input type="checkbox" id="facts" name="facts" />
         <label for="facts">just facts</label>
       </div>
@@ -95,7 +88,7 @@
           }
         }
         const subtractions = [];
-        for (let i = 0; i <= max.value; i++) {
+        for (let i = 1; i <= max.value; i++) {
           for (let j = 1; j <= i; j++) {
             if (!justfacts || isFact(j, i - j, i)) {
               subtractions.push([i, j, "-"]);
@@ -103,8 +96,8 @@
           }
         }
         const multiplications = [];
-        for (let i = 0; i <= max.value; i++) {
-          for (const j of [0, 1, 2, 3, 4, 5, 10]) {
+        for (let i = 1; i <= max.value; i++) {
+          for (const j of [1, 2, 3, 4, 5, 6, 7, 10]) {
             if (Math.random() > 0.5) {
               multiplications.push([i, j, "x"]);
             } else {
@@ -113,20 +106,16 @@
           }
         }
         const divisions = [];
-        for (let i = 0; i <= max.value; i++) {
-          for (const j of [0, 1, 2, 3, 5, 10]) {
+        for (let i = 1; i <= max.value; i++) {
+          for (const j of [1, 2, 3, 5, 6, 7, 10]) {
             divisions.push([j === 0 ? i : i * j, j, "÷"]);
           }
         }
-        const options = add.checked
-          ? additions
-          : subtract.checked
-          ? subtractions
-          : multiplication.checked
-          ? multiplications
-          : division.checked
-          ? divisions
-          : [...additions, ...subtractions, ...multiplications, ...divisions];
+        const options = [];
+        if (add.checked) options.push(...additions);
+        if (subtract.checked) options.push(...subtractions);
+        if (multiplication.checked) options.push(...multiplications);
+        if (division.checked) options.push(...divisions);
 
         for (let i = 0; i < Math.min(50, options.length); i++) {
           const dest = i < 25 ? col1 : col2;
@@ -149,7 +138,6 @@
       reset();
       add.onchange =
         subtract.onchange =
-        mixed.onchange =
         multiplication.onchange =
         division.onchange =
         max.onchange =
