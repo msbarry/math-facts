@@ -97,7 +97,7 @@
         }
         const multiplications = [];
         for (let i = 1; i <= max.value; i++) {
-          for (const j of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]) {
+          for (let j = 1; j <= 10; j++) {
             if (Math.random() > 0.5) {
               multiplications.push([i, j, "x"]);
             } else {
@@ -107,7 +107,7 @@
         }
         const divisions = [];
         for (let i = 1; i <= max.value; i++) {
-          for (const j of [1, 2, 3, 5, 6, 7, 8, 9, 10]) {
+          for (let j = 1; j <= 10; j++) {
             divisions.push([j === 0 ? i : i * j, j, "÷"]);
           }
         }
